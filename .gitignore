@@ -36,4 +36,8 @@ build/
 
 ### Mac OS ###
 .DS_Store
-/src/main/java/com/raylib/
+
+
+venv/
+src/main/java/com/raylib/
+raylib_parser

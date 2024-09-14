@@ -45,15 +45,25 @@ public class Util {
 
             Files.copy(source, extractedLoc, StandardCopyOption.REPLACE_EXISTING);
 
-            Runtime.getRuntime().addShutdownHook(new Thread() {
-                public void run() {
-                    try {
-                        Files.delete(extractedLoc);
-                    } catch (IOException e) {
-                        throw new RuntimeException(e);
-                    }
+            // TODO(brian): since this method is used for extracting the platform-specific shared lib
+            //   as well as other resources (like the rabbit png when running Bunnymark), the shutdown
+            //   hook can be registered more than once.
+            //   this is not a problem in general but if we want to manually close the library arena
+            //   then maybe we should only do so in the shutdown hook created for the library?
+            Runtime.getRuntime().addShutdownHook(new Thread(() -> {
+                var currentThread = Thread.currentThread();
+                var thread = STR."\{currentThread.getName()} \{currentThread.getThreadGroup().getName()}";
+                try {
+                    System.out.println(STR."Shutting down(\{thread}: closing library arena");
+                    com.raylib.jextract.raylib_h_1.LIBRARY_ARENA.close();
+                } catch (Exception _) {}
+                try {
+                    System.out.println(STR."Shutting down(\{thread}: deleting temp file \{extractedLoc}");
+                    Files.delete(extractedLoc);
+                } catch (IOException e) {
+                    throw new RuntimeException(e);
                 }
-            });
+            }));
 
             return extractedLoc.toString();
         } catch (IOException e) {

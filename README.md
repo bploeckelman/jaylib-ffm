@@ -142,6 +142,7 @@ Raylib.createIntBuffer(1) to ensure you create a direct, native buffer.
     ./raylib_parser --input raylib/src/rlgl.h --output rlgl_api.json --format JSON --truncate "RLGL IMPLEMENTATION"
     jextract -l :./libraylib.so --output src/main/java/ --target-package com.raylib.jextract raylib.h
     sed -i 's/".\/libraylib.so"/uk.co.electronstudio.Util.extractDLLforOS()/g' src/main/java/com/raylib/jextract/raylib_h_1.java
+    sed -i 's/static final Arena LIBRARY_ARENA = Arena\.ofAuto();/public static final Arena LIBRARY_ARENA = Arena.ofShared();/' src/main/java/com/raylib/jextract/raylib_h_1.java
     python3.12 generate.py
     mvn package
     java -cp target/jaylib2-ffm-0.0.1.jar uk.co.electronstudio.tests.Bunnymark

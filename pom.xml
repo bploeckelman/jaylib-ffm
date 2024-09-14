@@ -50,7 +50,6 @@
                     <name>GitHub Packages</name>
                     <url>https://maven.pkg.github.com/electronstudio/jaylib-ffm</url>
                 </repository>
-
             </distributionManagement>
         </profile>
         <profile>
@@ -99,13 +98,19 @@
     <build>
         <pluginManagement>
             <plugins>
-
-
             </plugins>
         </pluginManagement>
-
         <plugins>
-
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <version>3.13.0</version>
+                <configuration>
+                    <source>22</source>
+                    <target>22</target>
+                    <enablePreview>true</enablePreview>
+                </configuration>
+            </plugin>
             <plugin>
                 <groupId>org.codehaus.mojo</groupId>
                 <artifactId>exec-maven-plugin</artifactId>
@@ -121,9 +126,6 @@
                     <mainClass>uk.co.electronstudio.tests.Bunnymark</mainClass>
                 </configuration>
             </plugin>
-
-
-
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-source-plugin</artifactId>
